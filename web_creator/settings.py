@@ -11,10 +11,16 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load .env file if it exists
+dotenv_path = BASE_DIR / ".env"
+if dotenv_path.exists():
+    load_dotenv(dotenv_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -25,7 +31,9 @@ SECRET_KEY = 'django-insecure-_0trgicfs+9!0pnp@9nw90%p#5=b+&eqip^2^^q#kmnr9on-f2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+APP_HOST = os.getenv("APP_HOST","null")
+ALLOWED_HOSTS = [APP_HOST,"localhost"]
 
 
 # Application definition
@@ -71,14 +79,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'web_creator.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+DB_DIR = "/storage/"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # La base de données sera dans le répertoire du projet
     }
 }
 

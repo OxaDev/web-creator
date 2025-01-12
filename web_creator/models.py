@@ -2,10 +2,14 @@ from django.db import models
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 
+from django.contrib.auth import get_user_model
+UserModel = get_user_model()
+
 class Page(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
     parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='children')
+    created_by = models.ForeignKey(UserModel, null=False, on_delete=models.CASCADE)
     content = RichTextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
